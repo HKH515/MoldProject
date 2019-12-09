@@ -3,7 +3,7 @@ from flask import Flask, jsonify, render_template
 
 from enum import IntEnum
 
-from flask.ext.sqlalchemy import SQLAlchemy
+#from flask.ext.sqlalchemy import SQLAlchemy
 
 # this file is both the API and the webserver
 
@@ -16,7 +16,7 @@ class WarningType(IntEnum):
 
 app = Flask(__name__)
 
-db = SQLAlchemy(app)
+#db = SQLAlchemy(app)
 
 
 
