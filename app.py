@@ -3,6 +3,7 @@ from flask import Flask, jsonify, render_template
 
 from enum import IntEnum
 
+from flask.ext.sqlalchemy import SQLAlchemy
 
 # this file is both the API and the webserver
 
@@ -14,6 +15,9 @@ class WarningType(IntEnum):
     HUMIDITY = 1
 
 app = Flask(__name__)
+
+db = SQLAlchemy(app)
+
 
 
 # API
