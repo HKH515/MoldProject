@@ -25,7 +25,6 @@ class WarningType(IntEnum):
 
 app = Flask(__name__)
 
-
 def get_env_variable(name):
     try:
         return os.environ[name]
