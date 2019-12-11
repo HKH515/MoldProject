@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+print("DSFJDSFKDSJFKDSFJKSJDF0")
 import os
 print(os.getcwd())
 import sys
@@ -11,9 +12,6 @@ from flask import Flask, jsonify, render_template
 from enum import IntEnum
 
 
-
-from models import Device, Location, Measurement, db
-
 # this file is both the API and the webserver
 
 
@@ -23,6 +21,7 @@ class WarningType(IntEnum):
     CONNECTION_LOST = 0
     HUMIDITY = 1
 
+print("DSFJDSFKDSJFKDSFJKSJDF1")
 app = Flask(__name__)
 
 def get_env_variable(name):
@@ -35,15 +34,35 @@ def get_env_variable(name):
 # the values of those depend on your setup
 POSTGRES_URL = get_env_variable("POSTGRES_URL")
 POSTGRES_USER = get_env_variable("POSTGRES_USER")
-POSTGRES_PW = get_env_variable("POSTGRES_PW")
+POSTGRES_PASSWORD = get_env_variable("POSTGRES_PASSWORD")
 POSTGRES_DB = get_env_variable("POSTGRES_DB")
+print(POSTGRES_URL)
+print(POSTGRES_USER)
+print(POSTGRES_PASSWORD)
+print(POSTGRES_DB)
 
-DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user=POSTGRES_USER,pw=POSTGRES_PW,url=POSTGRES_URL,db=POSTGRES_DB)
+#DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user=POSTGRES_USER,pw=POSTGRES_PASSWORD,url=POSTGRES_URL,db=POSTGRES_DB)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
+#app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
+#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
 
-db.init_app(app)
+#db.init_app(app)
+
+import psycopg2
+
+import time
+
+conn = psycopg2.connect("dbname='{db}' user='{user}' host='{url}' password='{pw}'".format(user=POSTGRES_USER,pw=POSTGRES_PASSWORD,url=POSTGRES_URL,db=POSTGRES_DB))
+print("connected to db")
+
+curr = conn.cursor()
+#with open("init.sql") as init_script:
+#    curr.execute(init_script.read())
+#curr.commit()
+#curr.close()
+    #curr.execute(init_script.read())
+
+
 
 
 # API
@@ -88,7 +107,3 @@ def index():
 @app.route("/devices")
 def devices():
     return render_template("devices.html")
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
