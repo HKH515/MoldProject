@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
+
+import os
+print(os.getcwd())
+import sys
+sys.path.append("code")
+import models
+
 from flask import Flask, jsonify, render_template
 
 from enum import IntEnum
 
 
-import os
 
 from models import Device, Location, Measurement, db
 
