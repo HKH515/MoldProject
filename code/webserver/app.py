@@ -33,10 +33,10 @@ def get_env_variable(name):
         raise Exception(message)
 
 # the values of those depend on your setup
-POSTGRES_URL = get_env_variable("POSTGRES_URL")
-POSTGRES_USER = get_env_variable("POSTGRES_USER")
-POSTGRES_PW = get_env_variable("POSTGRES_PW")
-POSTGRES_DB = get_env_variable("POSTGRES_DB")
+POSTGRES_URL = "127.0.0.1:5432" #get_env_variable("POSTGRES_URL")
+POSTGRES_USER = "postgres" #get_env_variable("POSTGRES_USER")
+POSTGRES_PW = "BtQ&8DKY9#76" #get_env_variable("POSTGRES_PW")
+POSTGRES_DB = "walldo" #get_env_variable("POSTGRES_DB")
 
 DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user=POSTGRES_USER,pw=POSTGRES_PW,url=POSTGRES_URL,db=POSTGRES_DB)
 
@@ -55,9 +55,12 @@ def api_devices():
         arr.append({
             "name": "Example name %s" % i,
             "location": "Example room %s" % i,
-            "id": str(i)
+            "id": str(i),
+            "humidity": "35",
+            "battery":"80",
+            "connected":True
         })
-    return jsonify(arr)
+    return arr
 
 @app.route("/api/devices/<int:device_id>")
 def api_devices_by_id(device_id):
@@ -74,10 +77,13 @@ def api_warnings():
     for i in range(10):
         arr.append({
             "name": "Example name %s" % i,
-            "device_id": i,
-            "warning_type": WarningType.CONNECTION_LOST
+            "location": "Example room %s" % i,
+            "id": str(i),
+            "humidity": "35",
+            "battery":"80",
+            "connected":True
         })
-    return jsonify(arr)
+    return arr
 
 # WEBSERVER
 
@@ -87,7 +93,14 @@ def index():
 
 @app.route("/devices")
 def devices():
-    return render_template("devices.html")
+    device_list = api_devices()
+    return render_template("devices.html", device_list=device_list)
+
+@app.route("/warnings")
+def warnings():
+    warning_list = api_warnings()
+    return render_template("warnings.html", warning_list=warning_list)
+
 
 
 if __name__ == "__main__":
