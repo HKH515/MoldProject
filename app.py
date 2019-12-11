@@ -1,4 +1,4 @@
-#!flask/bin/python
+#!/usr/bin/env python3
 from flask import Flask, jsonify, render_template
 
 from enum import IntEnum
