@@ -29,7 +29,7 @@ DHT dht(DHTPIN, DHTTYPE);
 const char* ssid = STASSID;  
 const char*  password = STAPSK; 
 const byte ledPin = 0; // Pin with LED on Adafruit Huzzah
-const char* mqtt_server = "name of mqtt network"; 
+const char* mqtt_server = "192.168.1.122"; 
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -108,6 +108,16 @@ void loop() {
   reconnect();
  }
  client.loop();
+ char charH[10];
+ char charT[10];
+                 
+
+//4 is mininum width, 3 is precision; float value is copied onto buff
+
+ client.publish("humidity", dtostrf(h, 4, 3, charH));
+ client.publish("temperature", dtostrf(t, 4, 3, charT));
+
+ 
 }
  
 void callback(char* topic, byte* payload, unsigned int length) {
