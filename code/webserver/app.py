@@ -21,7 +21,6 @@ class WarningType(IntEnum):
     CONNECTION_LOST = 0
     HUMIDITY = 1
 
-print("DSFJDSFKDSJFKDSFJKSJDF1")
 app = Flask(__name__)
 
 def get_env_variable(name):
@@ -56,12 +55,6 @@ import time
 conn = psycopg2.connect("dbname='{db}' user='{user}' host='{url}' password='{pw}'".format(user=POSTGRES_USER,pw=POSTGRES_PASSWORD,url=POSTGRES_URL,db=POSTGRES_DB))
 print("connected to db")
 
-curr = conn.cursor()
-#with open("init.sql") as init_script:
-#    curr.execute(init_script.read())
-#curr.commit()
-#curr.close()
-    #curr.execute(init_script.read())
 
 
 
@@ -70,15 +63,17 @@ curr = conn.cursor()
 
 @app.route("/api/devices")
 def api_devices():
+    curr = conn.cursor()
+    curr.execute("SELECT * FROM deviceOverview;")
+    results = curr.fetchall();
     arr = []
-    for i in range(5):
+    for row in results:
         arr.append({
-            "name": "Example name %s" % i,
-            "location": "Example room %s" % i,
-            "id": str(i),
-            "humidity": "35",
-            "battery":"80",
-            "connected":True
+            "name": row[0],
+            "location": row[1],
+            "humidity": row[2],
+            "battery": row[3],
+            "connected": row[4]
         })
     return arr
 
