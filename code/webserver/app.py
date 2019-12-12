@@ -124,20 +124,34 @@ def api_index():
         }
     return index_info
 
+
+def get_chartdata(device_id):
+    curr = conn.cursor()
+    curr.execute("SELECT measurement.ts, measurement.value FROM measurement WHERE device_id = %s;" % device_id)
+    return curr.fetchall();
+
+
 @app.route("/api/chartdata")
 def api_chartdata():
+
     retarr = []
     device1 = []
     device2 = []
-    device1.append({"x": "10-12-2019 14:15","y":"23"})
-    device1.append({"x": "10-12-2019 15:15","y":"53"})
-    device1.append({"x": "10-12-2019 16:15","y":"13"})
-    device1.append({"x": "10-12-2019 17:15","y":"63"})
+
+    for row in get_chartdata(1):
+        device1.append({"x": row[0], "y": row[1]})
+    for row in get_chartdata(2):
+        device2.append({"x": row[0], "y": row[1]})
+
+    #device1.append({"x": "10-12-2019 14:15","y":"23"})
+    #device1.append({"x": "10-12-2019 15:15","y":"53"})
+    #device1.append({"x": "10-12-2019 16:15","y":"13"})
+    #device1.append({"x": "10-12-2019 17:15","y":"63"})
     retarr.append(device1)
-    device2.append({"x": "10-12-2019 14:15","y":"99"})
-    device2.append({"x": "10-12-2019 15:15","y":"72"})
-    device2.append({"x": "10-12-2019 16:15","y":"18"})
-    device2.append({"x": "10-12-2019 17:15","y":"12"})
+    #device2.append({"x": "10-12-2019 14:15","y":"99"})
+    #device2.append({"x": "10-12-2019 15:15","y":"72"})
+    #device2.append({"x": "10-12-2019 16:15","y":"18"})
+    #device2.append({"x": "10-12-2019 17:15","y":"12"})
     retarr.append(device2)
     return  jsonify(retarr)
 
