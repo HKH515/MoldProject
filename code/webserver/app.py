@@ -128,7 +128,7 @@ def api_index():
 def get_chartdata(device_id):
     curr = conn.cursor()
     curr.execute("SELECT measurement.ts, measurement.value FROM measurement WHERE device_id = %s;" % device_id)
-    return curr.fetchall();
+    return curr.fetchall()
 
 
 @app.route("/api/chartdata")
