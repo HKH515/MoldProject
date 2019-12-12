@@ -88,15 +88,17 @@ def api_devices_by_id(device_id):
 
 @app.route("/api/warnings")
 def api_warnings():
+    curr = conn.cursor()
+    curr.execute("SELECT * FROM warningsOverview;")
+    results = curr.fetchall();
     arr = []
-    for i in range(10):
+    for row in results:
         arr.append({
-            "name": "Example name %s" % i,
-            "location": "Example room %s" % i,
-            "id": str(i),
-            "humidity": "35",
-            "battery":"80",
-            "connected":True
+            "name": row[0],
+            "location": row[1],
+            "humidity": row[2],
+            "battery": row[3],
+            "connected": row[4]
         })
     return arr
 
