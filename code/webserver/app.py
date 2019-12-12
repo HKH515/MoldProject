@@ -67,7 +67,6 @@ print("connected to db")
 
 # API
 
-@app.route("/api/devices")
 def api_devices():
     curr = conn.cursor()
     curr.execute("SELECT * FROM deviceOverview;")
@@ -82,16 +81,22 @@ def api_devices():
         })
     return arr
 
+@app.route("/api/devices")
+def json_api_devices():
+    return jsonify(api_devices)
+
 @app.route("/api/devices/<int:device_id>")
 def api_devices_by_id(device_id):
+    curr = conn.cursor()
+    curr.execute("SELECT device.name, room.name FROM device JOIN room ON device.room_id = room.id WHERE device.id = %s;" % device_id)
+    results = curr.fetchone();
     obj = {
-        "name": "Example name",
-        "location": "Example room",
-        "id": 1
+        "name": results[0],
+        "location": results[1],
     }
-    return jsonify(obj)
+    return obj
 
-@app.route("/api/warnings")
+
 def api_warnings():
     curr = conn.cursor()
     curr.execute("SELECT * FROM warningsOverview;")
@@ -105,6 +110,10 @@ def api_warnings():
             "connected": row[3]
         })
     return arr
+
+@app.route("/api/warnings")
+def json_api_warnings():
+    return jsonify(api_warnings())
 
 @app.route("/api/index")
 def api_index():
