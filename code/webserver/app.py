@@ -34,7 +34,7 @@ def get_env_variable(name):
 # the values of those depend on your setup
 POSTGRES_URL = "127.0.0.1:5432" #get_env_variable("POSTGRES_URL")
 POSTGRES_USER = "postgres" #get_env_variable("POSTGRES_USER")
-POSTGRES_PW = "BtQ&8DKY9#76" #get_env_variable("POSTGRES_PW")
+POSTGRES_PASSWORD = "BtQ&8DKY9#76" #get_env_variable("POSTGRES_PW")
 POSTGRES_DB = "walldo" #get_env_variable("POSTGRES_DB")
 print(POSTGRES_URL)
 print(POSTGRES_USER)
