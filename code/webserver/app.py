@@ -28,7 +28,7 @@ def get_env_variable(name):
     try:
         return os.environ[name]
     except KeyError:
-        message = "Expected environment variable '{}' not set.".format(name)
+        message = "Expected environment variable '{}' not set.".format(name) 
         raise Exception(message)
 
 # the values of those depend on your setup
@@ -52,10 +52,10 @@ import psycopg2
 
 import time
 
-conn = psycopg2.connect("dbname='{db}' user='{user}' host='{url}' password='{pw}'".format(user=POSTGRES_USER,pw=POSTGRES_PASSWORD,url=POSTGRES_URL,db=POSTGRES_DB))
+#conn = psycopg2.connect("dbname='{db}' user='{user}' host='{url}' password='{pw}'".format(user=POSTGRES_USER,pw=POSTGRES_PASSWORD,url=POSTGRES_URL,db=POSTGRES_DB))
 print("connected to db")
 
-curr = conn.cursor()
+#curr = conn.cursor()
 #with open("init.sql") as init_script:
 #    curr.execute(init_script.read())
 #curr.commit()
@@ -104,11 +104,38 @@ def api_warnings():
         })
     return arr
 
+@app.route("/api/index")
+def api_index():
+    index_info={
+            "humidityProblem": False,
+            "numberOfDevices": 2,
+            "numberOfWarnings": 0
+        }
+    return index_info
+
+@app.route("/api/chartdata")
+def api_chartdata():
+    retarr = []
+    device1 = []
+    device2 = []
+    device1.append({"x": "10-12-2019 14:15","y":"23"})
+    device1.append({"x": "10-12-2019 15:15","y":"53"})
+    device1.append({"x": "10-12-2019 16:15","y":"13"})
+    device1.append({"x": "10-12-2019 17:15","y":"63"})
+    retarr.append(device1)
+    device2.append({"x": "10-12-2019 14:15","y":"99"})
+    device2.append({"x": "10-12-2019 15:15","y":"72"})
+    device2.append({"x": "10-12-2019 16:15","y":"18"})
+    device2.append({"x": "10-12-2019 17:15","y":"12"})
+    retarr.append(device2)
+    return  jsonify(retarr)
+
 # WEBSERVER
 
 @app.route("/")
 def index():
-    return render_template("index.html") 
+    info = api_index()
+    return render_template("index.html", index_info=info) 
 
 @app.route("/devices")
 def devices():
@@ -119,7 +146,6 @@ def devices():
 def warnings():
     warning_list = api_warnings()
     return render_template("warnings.html", warning_list=warning_list)
-
 
 if __name__ == "__main__":
     app.run(debug=True)
