@@ -32,10 +32,10 @@ def get_env_variable(name):
         raise Exception(message)
 
 # the values of those depend on your setup
-POSTGRES_URL = "127.0.0.1:5432" #get_env_variable("POSTGRES_URL")
-POSTGRES_USER = "postgres" #get_env_variable("POSTGRES_USER")
-POSTGRES_PASSWORD = "BtQ&8DKY9#76" #get_env_variable("POSTGRES_PW")
-POSTGRES_DB = "walldo" #get_env_variable("POSTGRES_DB")
+POSTGRES_URL = get_env_variable("POSTGRES_URL")
+POSTGRES_USER = get_env_variable("POSTGRES_USER")
+POSTGRES_PASSWORD = get_env_variable("POSTGRES_PASSWORD")
+POSTGRES_DB = get_env_variable("POSTGRES_DB")
 print(POSTGRES_URL)
 print(POSTGRES_USER)
 print(POSTGRES_PASSWORD)
