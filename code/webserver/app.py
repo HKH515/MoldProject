@@ -52,7 +52,7 @@ import psycopg2
 
 import time
 
-#conn = psycopg2.connect("dbname='{db}' user='{user}' host='{url}' password='{pw}'".format(user=POSTGRES_USER,pw=POSTGRES_PASSWORD,url=POSTGRES_URL,db=POSTGRES_DB))
+conn = psycopg2.connect("dbname='{db}' user='{user}' host='{url}' password='{pw}'".format(user=POSTGRES_USER,pw=POSTGRES_PASSWORD,url=POSTGRES_URL,db=POSTGRES_DB))
 print("connected to db")
 
 #curr = conn.cursor()
@@ -78,8 +78,7 @@ def api_devices():
             "name": row[0],
             "location": row[1],
             "humidity": row[2],
-            "battery": row[3],
-            "connected": row[4]
+            "connected": row[3]
         })
     return arr
 
@@ -103,8 +102,7 @@ def api_warnings():
             "name": row[0],
             "location": row[1],
             "humidity": row[2],
-            "battery": row[3],
-            "connected": row[4]
+            "connected": row[3]
         })
     return arr
 
