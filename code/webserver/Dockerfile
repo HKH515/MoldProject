@@ -3,10 +3,10 @@ WORKDIR /code/webserver
 ENV FLASK_APP app.py
 ENV FLASK_RUN_HOST webserver
 ENV FLASK_ENV development
-#ENV POSTGRES_URL="0.0.0.0:2345"
-#ENV POSTGRES_USER="postgres"
-#ENV POSTGRES_PASSWORD="BtQ&8DKY9#76"
-#ENV POSTGRES_DB="walldo"
+ENV POSTGRES_URL="database"
+ENV POSTGRES_USER="postgres"
+ENV POSTGRES_PASSWORD="BtQ&8DKY9#76"
+ENV POSTGRES_DB="walldo"
 
 
 RUN apk add --no-cache gcc musl-dev linux-headers

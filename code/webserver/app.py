@@ -21,7 +21,6 @@ class WarningType(IntEnum):
     CONNECTION_LOST = 0
     HUMIDITY = 1
 
-print("DSFJDSFKDSJFKDSFJKSJDF1")
 app = Flask(__name__)
 
 def get_env_variable(name):
@@ -32,10 +31,11 @@ def get_env_variable(name):
         raise Exception(message)
 
 # the values of those depend on your setup
-POSTGRES_URL = "127.0.0.1:5432" #get_env_variable("POSTGRES_URL")
-POSTGRES_USER = "postgres" #get_env_variable("POSTGRES_USER")
-POSTGRES_PASSWORD = "BtQ&8DKY9#76" #get_env_variable("POSTGRES_PW")
-POSTGRES_DB = "walldo" #get_env_variable("POSTGRES_DB")
+POSTGRES_URL = get_env_variable("POSTGRES_URL")
+POSTGRES_URL = "database"
+POSTGRES_USER = get_env_variable("POSTGRES_USER")
+POSTGRES_PASSWORD = get_env_variable("POSTGRES_PASSWORD")
+POSTGRES_DB = get_env_variable("POSTGRES_DB")
 print(POSTGRES_URL)
 print(POSTGRES_USER)
 print(POSTGRES_PASSWORD)
@@ -69,15 +69,17 @@ print("connected to db")
 
 @app.route("/api/devices")
 def api_devices():
+    curr = conn.cursor()
+    curr.execute("SELECT * FROM deviceOverview;")
+    results = curr.fetchall();
     arr = []
-    for i in range(5):
+    for row in results:
         arr.append({
-            "name": "Example name %s" % i,
-            "location": "Example room %s" % i,
-            "id": str(i),
-            "humidity": "35",
-            "battery":"80",
-            "connected":True
+            "name": row[0],
+            "location": row[1],
+            "humidity": row[2],
+            "battery": row[3],
+            "connected": row[4]
         })
     return arr
 
@@ -92,15 +94,17 @@ def api_devices_by_id(device_id):
 
 @app.route("/api/warnings")
 def api_warnings():
+    curr = conn.cursor()
+    curr.execute("SELECT * FROM warningsOverview;")
+    results = curr.fetchall();
     arr = []
-    for i in range(10):
+    for row in results:
         arr.append({
-            "name": "Example name %s" % i,
-            "location": "Example room %s" % i,
-            "id": str(i),
-            "humidity": "35",
-            "battery":"80",
-            "connected":True
+            "name": row[0],
+            "location": row[1],
+            "humidity": row[2],
+            "battery": row[3],
+            "connected": row[4]
         })
     return arr
 
