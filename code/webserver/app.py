@@ -127,13 +127,15 @@ def api_index():
 @app.route("/api/submit", methods=["POST"])
 def submit():
     data = request.form
+    print(data)
 
     humidity_value = data['humidity_value']
     device_id = data['device_id']
     ts = data['timestamp']
 
     curr = conn.cursor()
-    curr.execute("INSERT INTO measurement (value, device_id, ts) VALUES (%s, %s, %s)" % (humidity_value, device_id, ts))
+    curr.execute("INSERT INTO measurement (value, device_id, ts) VALUES (%s, %s, '%s')" % (humidity_value, device_id, ts))
+    conn.commit()
 
 
 def get_chartdata(device_id):
