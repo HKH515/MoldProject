@@ -1,0 +1,31 @@
+version: '3'
+services:
+    webserver:
+        build:
+            context: ./code/webserver
+        ports:
+            - "5000:5000"
+        env_file:
+            - .env
+#        depends_on: 
+#            - "database"
+        restart: always
+    database:
+        build:
+            context: ./code/database
+        volumes:
+            - db-data:/var/lib/postgresql/data
+        ports:
+            # outside:container
+            - "5432:5432"
+        environment:
+            POSTGRES_PASSWORD: BtQ&8DKY9#76
+            POSTGRES_USER: postgres
+            POSTGRES_DB: walldo
+            PG_HOST: database
+            PG_PORT: 5432
+        restart: always
+volumes:
+    db-data:
+        driver:
+            local

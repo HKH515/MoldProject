@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %}
+Walldo
+{% endblock %}
+{% block content %}
+<div class="container text-center" >
+    <div class="row text-center">
+        <div class="col-lg-12">
+            {{ '<div class="alert alert-success" role="alert"><h1 class="alert-heading" style="font-size: 6rem;color:green;">Humidity OK</h1></div>'|safe if index_info.humidityProblem == False else '<div class="alert alert-danger" role="alert"><h1 style="font-size: 6rem;color:red;">Humidity NOT OK</h1></div>'|safe }}
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-lg-12">
+            <canvas id="theChart" width="400" height="150"></canvas>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-lg-6">
+                <div class="card border-primary mb-3 btn" style="max-width: 100%;" onclick="window.location.href='/devices'">
+                <div class="card-body text-primary">
+                    <h5 class="card-title">Devices</h5>
+                    <p class="card-text" style="font-size: 3rem;">{{ index_info.numberOfDevices }}</p>
+                </div>
+                </div>
+        </div>
+        <!-- <div class="col-lg-4">
+            <div class="card border-success mb-3 btn" style="max-width: 100%;" onclick="window.location.href='/overview'">
+            <div class="card-body text-success">
+                <h5 class="card-title">Overview</h5>
+                <p class="fas fa-chart-area" style="color:green;font-size: 3.5rem;"></p>
+            </div>
+            </div>
+        </div> -->
+        <div class="col-lg-6">
+            <div class="card border-danger mb-3 btn" style="max-width: 100%;" onclick="window.location.href='/warnings'">
+                <div class="card-body text-danger">
+                    <h5 class="card-title">Warnings</h5>
+                    <p class="card-text" style="font-size: 3rem;">{{ index_info.numberOfWarnings }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+
+        getData();
+
+        var ctx = document.getElementById('theChart').getContext('2d');
+
+        var data = {
+        labels: [],
+        datasets: [{
+                label: "Bathroom",
+                lineTension: 0.1,
+                fill:false,
+                backgroundColor: "rgba(225,0,0,0.4)",
+                borderColor: "#ff6961", // The main line color
+                borderCapStyle: 'square',
+                borderDash: [], // try [5, 15] for instance
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: "black",
+                pointBackgroundColor: "white",
+                pointBorderWidth: 1,
+                pointHoverRadius: 8,
+                pointHoverBackgroundColor: "yellow",
+                pointHoverBorderColor: "brown",
+                pointHoverBorderWidth: 2,
+                pointRadius: 4,
+                pointHitRadius: 10,
+                data: [],
+                spanGaps: true,
+            },
+            {
+                label: "Bedroom",
+                lineTension: 0.1,
+                fill:false,
+                backgroundColor: "rgba(225,0,0,0.4)",
+                borderColor: "#aec6cf", // The main line color
+                borderCapStyle: 'square',
+                borderDash: [], // try [5, 15] for instance
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: "black",
+                pointBackgroundColor: "white",
+                pointBorderWidth: 1,
+                pointHoverRadius: 8,
+                pointHoverBackgroundColor: "yellow",
+                pointHoverBorderColor: "brown",
+                pointHoverBorderWidth: 2,
+                pointRadius: 4,
+                pointHitRadius: 10,
+                // notice the gap in the data and the spanGaps: true
+                data: [],
+                spanGaps: true,
+            }]
+        };
+
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: {
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        distribution: 'series',
+                        time: {
+                            unit: 'minutes'
+                        }
+                    }]
+                }
+            }
+        });
+
+        function getData(){
+            $.ajax({
+                url : '/api/chartdata',
+                type: 'GET',
+                success : function(data){
+
+                    myLineChart.data.datasets[0].data = [];
+                    myLineChart.data.datasets[1].data = [];
+
+                    //device1 array
+                    data[0].forEach(element => {
+                        myLineChart.data.datasets[0].data.push({x:element.x,y:element.y});
+                    });
+
+                    //device2 array
+                    data[1].forEach(element => {
+                        myLineChart.data.datasets[1].data.push({x:element.x,y:element.y});
+                    });
+
+                    // re-render the chart
+                    myLineChart.update();
+                }
+            })
+        }
+
+
+        setInterval(() => {
+            getData()
+        }, 5000);
+
+    });
+</script>
+{% endblock %}

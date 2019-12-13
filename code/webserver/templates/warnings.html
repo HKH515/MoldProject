@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}
+    Walldo - Warnings
+{% endblock %}
+{% block content %}
+<h1 class="display-4">Warnings</h1>
+<table class="table table-striped mt-2">
+    <thead>
+        <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Location</th>
+        <th scope="col">Humidity (%)</th>
+        <th scope="col">Battery</th>
+        <th scope="col">Connection</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for device in warning_list %}
+        <tr>
+            <th scope="row">{{device.name}}</th>
+            <td>{{device.location}}</td>
+            <td>{{device.humidity}}</td>
+            <td>{{device.battery}}</td>
+            <td>{{ '<i class="fas fa-check" style="color:green"></i>'|safe if device.connected == True else '<i class="fas fa-times" style="color:red"></i>'|safe }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
