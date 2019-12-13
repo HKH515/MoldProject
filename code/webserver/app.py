@@ -7,7 +7,7 @@ import sys
 sys.path.append("code")
 import models
 
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 
 from enum import IntEnum
 
@@ -123,6 +123,17 @@ def api_index():
             "numberOfWarnings": 0
         }
     return index_info
+
+@app.route("/api/submit", methods=["POST"])
+def submit():
+    data = request.form
+
+    humidity_value = data['humidity_value']
+    device_id = data['device_id']
+    ts = data['timestamp']
+
+    curr = conn.cursor()
+    curr.execute("INSERT INTO measurement (value, device_id, ts) VALUES (%s, %s, %s)" % (humidity_value, device_id, ts))
 
 
 def get_chartdata(device_id):

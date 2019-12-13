@@ -2,12 +2,12 @@ create database walldo owner postgres;
 
 CREATE TABLE room(
     id bigserial PRIMARY KEY,
-    name character varying(255) NOT NULL
+    name character varying(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE device(
     id bigserial PRIMARY KEY,
-    name character varying(255) NOT NULL,
+    name character varying(255) NOT NULL UNIQUE,
     room_id integer REFERENCES room(id)
 );
 
@@ -21,6 +21,7 @@ CREATE TABLE measurement(
 
 
 -- VIEW THAT SHOWS THE LATEST ENTRY FROM EACH DEVICE, USED IN /devices
+-- note that this view only shows devices that have at least one entry in measurements
 CREATE VIEW deviceOverview AS (
     WITH C AS (
         SELECT device_id, MAX(ts) as ts
