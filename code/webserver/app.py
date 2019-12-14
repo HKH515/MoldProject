@@ -167,13 +167,13 @@ def warnings_count_only_humidity():
 @app.route("/api/warnings_get_rooms")
 def warnings_get_rooms():
     curr = conn.cursor()
-    curr.execute("SELECT room_name FROM warningsoverview;")
+    curr.execute("SELECT room_name, device_name FROM warningsoverviewonlyhumidity;")
     results = curr.fetchall();
 
     room_list = []
 
     for row in results:
-        room_list.append(row[0])
+        room_list.append("%s: %s" % (row[0], row[1])
 
     return jsonify(room_list)
 
