@@ -106,7 +106,17 @@ Walldo
                         type: 'time',
                         distribution: 'series',
                         time: {
-                            unit: 'minutes'
+			    displayFormats: {
+          			'millisecond': 'DD.MM.YYYY hh:mm',
+            			'second': 'DD.MM.YYYY hh:mm',
+				'minute': 'DD.MM.YYYY hh:mm',
+            			'hour': 'DD.MM.YYYY hh:mm',
+            			'day': 'DD.MM.YYYY hh:mm',
+            			'week': 'DD.MM.YYYY hh:mm',
+            			'month': 'DD.MM.YYYY hh:mm',
+            			'quarter': 'DD.MM.YYYY hh:mm',
+            			'year': 'DD.MM.YYYY hh:mm',
+          		}
                         }
                     }]
                 }
