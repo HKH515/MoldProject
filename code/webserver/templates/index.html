@@ -55,7 +55,7 @@ Walldo
                 lineTension: 0.1,
                 fill:false,
                 backgroundColor: "rgba(225,0,0,0.4)",
-                borderColor: "#ff6961", // The main line color
+                borderColor: "#ffb347", // The main line color
                 borderCapStyle: 'square',
                 borderDash: [], // try [5, 15] for instance
                 borderDashOffset: 0.0,
@@ -104,19 +104,34 @@ Walldo
                 scales: {
                     xAxes: [{
                         type: 'time',
-                        distribution: 'series',
+                            distribution: 'series',
                         time: {
-			    displayFormats: {
-          			'millisecond': 'DD.MM.YYYY hh:mm',
-            			'second': 'DD.MM.YYYY hh:mm',
-				'minute': 'DD.MM.YYYY hh:mm',
-            			'hour': 'DD.MM.YYYY hh:mm',
-            			'day': 'DD.MM.YYYY hh:mm',
-            			'week': 'DD.MM.YYYY hh:mm',
-            			'month': 'DD.MM.YYYY hh:mm',
-            			'quarter': 'DD.MM.YYYY hh:mm',
-            			'year': 'DD.MM.YYYY hh:mm',
-          		}
+                            displayFormats: {
+                                    'millisecond': 'DD.MM.YYYY HH:mm',
+                                    'second': 'DD.MM.YYYY HH:mm',
+                                    'minute': 'DD.MM.YYYY HH:mm',
+                                    'hour': 'DD.MM.YYYY HH:mm',
+                                    'day': 'DD.MM.YYYY HH:mm',
+                                    'week': 'DD.MM.YYYY HH:mm',
+                                    'month': 'DD.MM.YYYY HH:mm',
+                                    'quarter': 'DD.MM.YYYY HH:mm',
+                                    'year': 'DD.MM.YYYY HH:mm',
+                                }
+                            }
+                    }]
+                },
+                annotation: {
+                    annotations: [{
+                        type: 'line',
+                        mode: 'horizontal',
+                        scaleID: 'y-axis-0',
+                        value: 70,
+                        borderColor: '#ff6961',
+                        borderWidth: 3,
+                        label: {
+                        backgroundColor: '#ff6961',
+                        enabled: true,
+                        content: 'Humidity threshold'
                         }
                     }]
                 }
