@@ -120,7 +120,6 @@ def api_index():
     w_count = warnings_count()
     w_only_humidity_count = warnings_count_only_humidity()
     index_info={
-            "humidityProblem": False,
             "numberOfDevices": device_count(),
             "numberOfWarnings": w_count,
             "humidityProblem": w_only_humidity_count != 0
