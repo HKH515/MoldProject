@@ -173,7 +173,7 @@ def warnings_get_rooms():
     room_list = []
 
     for row in results:
-        room_list.append("%s: %s" % (row[0], row[1])
+        room_list.append("%s: %s" % (row[0], row[1]))
 
     return jsonify(room_list)
 
