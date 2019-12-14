@@ -41,3 +41,9 @@ CREATE VIEW warningsOverview AS (
     WHERE value >= 70
     OR connected = False
 );
+
+-- SAME AS ABOVE, BUT THIS IS ONLY FOR HUMIDITY, USED FOR THE WARNING ON THE MAIN PAGE
+CREATE VIEW warningsOverviewOnlyHumidity AS (
+    SELECT * FROM deviceOverview
+    WHERE value >= 70
+);

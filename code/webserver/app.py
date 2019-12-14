@@ -118,11 +118,12 @@ def json_api_warnings():
 @app.route("/api/index")
 def api_index():
     w_count = warnings_count()
+    w_only_humidity_count = warnings_count_only_humidity()
     index_info={
             "humidityProblem": False,
             "numberOfDevices": device_count(),
             "numberOfWarnings": w_count,
-            "humidityProblem": w_count != 0
+            "humidityProblem": warnings_count_only_humidity != 0
         }
     return index_info
 
@@ -156,6 +157,14 @@ def warnings_count():
 
     return result[0]
 
+@app.route("/api/warnings_count_only_humidity")
+def warnings_count_only_humidity():
+    curr = conn.cursor()
+    curr.execute("SELECT COUNT(*) FROM warningsoverviewonlyhumidity;")
+    result = curr.fetchone()
+
+    return result[0]
+
 @app.route("/api/warnings_get_rooms")
 def warnings_get_rooms():
     curr = conn.cursor()
@@ -171,7 +180,7 @@ def warnings_get_rooms():
 
 def get_chartdata(device_id):
     curr = conn.cursor()
-    curr.execute("SELECT measurement.ts, measurement.value FROM measurement WHERE device_id = %s;" % device_id)
+    curr.execute("SELECT measurement.ts, measurement.value FROM measurement WHERE device_id = %s ORDER BY measurement.ts DESC limit 30;" % device_id)
     return curr.fetchall()
 
 
