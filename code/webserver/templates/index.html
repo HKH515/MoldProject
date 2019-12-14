@@ -38,7 +38,7 @@ Walldo
 
         getData();
 
-        var firstLoad = True;
+        var firstLoad = true;
 
         var ctx = document.getElementById('theChart').getContext('2d');
         var bigMessage = $('#bigMessage');
@@ -168,7 +168,7 @@ Walldo
                             myLineChart.data.datasets[1].data.push({x:element.x,y:element.y});
                         });
 
-                        firstLoad = False;
+                        firstLoad = false;
                     }
                     else{
                         myLineChart.data.datasets[0].data.push(data[0][0]);
