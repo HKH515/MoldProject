@@ -123,7 +123,7 @@ def api_index():
             "humidityProblem": False,
             "numberOfDevices": device_count(),
             "numberOfWarnings": w_count,
-            "humidityProblem": w_count_only_humidity != 0
+            "humidityProblem": w_only_humidity_count != 0
         }
     return index_info
 
