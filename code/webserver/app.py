@@ -143,7 +143,7 @@ def submit():
 @app.route("/api/device_count")
 def device_count():
     curr = conn.cursor()
-    curr.execute("COUNT(*) FROM deviceoverview;")
+    curr.execute("SELECT COUNT(*) FROM deviceoverview;")
     result = curr.fetchone()
 
     return result
