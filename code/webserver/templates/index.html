@@ -175,11 +175,23 @@ Walldo
                 type: 'GET',
                 success : function(data){
 
-                    if(data.humidityProblem == true)
+                    if(data.humidityProblem == true) //somethings wrong
                     {
-                        bigMessage.html('<div class="alert alert-danger" role="alert"><h1 class="alert-heading" style="font-size: 6rem;color:red;">Humidity NOT OK</h1></div>');
+                        //get the list of rooms with problemattic sensors
+                        $.ajax({
+                            url : '/api/warnings_get_rooms',
+                            type : 'GET',
+                            success : function(data){
+                                var listOfRooms = data.toString();
+
+                                bigMessage.html('<div class="alert alert-danger" role="alert"><h1 class="alert-heading" style="font-size: 6rem;color:red;">Humidity NOT OK</h1><hr><p class="mb-0">The follwing locations have problems: <b>' + listOfRooms + '</b></p></div>');
+                            },
+                            error : function(err){
+                                bigMessage.html('<div class="alert alert-danger" role="alert"><h1 class="alert-heading" style="font-size: 6rem;color:red;">Humidity NOT OK</h1><hr><p class="mb-0">Location unknown</p></div>');
+                            }
+                        })
                     }
-                    else if(data.humidityProblem == false)
+                    else if(data.humidityProblem == false)//everything is ok
                     {
                         bigMessage.html('<div class="alert alert-success" role="alert"><h1 class="alert-heading" style="font-size: 6rem;color:green;">Humidity OK</h1></div>');
                     }
@@ -190,14 +202,6 @@ Walldo
                     numOfDevices.text(data.numberOfDevices);
                     numOfWarnings.text(data.numberOfWarnings);
 
-                }
-            })
-
-            $.ajax({
-                url : '/api/warnings_get_rooms',
-                type : 'GET',
-                success : function(data){
-                    console.log(data)
                 }
             })
         }
