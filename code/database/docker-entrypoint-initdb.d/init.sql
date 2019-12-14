@@ -15,7 +15,7 @@ CREATE TABLE measurement(
     id bigserial PRIMARY KEY,
     value double precision NOT NULL,
     device_id integer REFERENCES device(id),
-    ts TIMESTAMP
+    ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 

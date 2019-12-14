@@ -131,10 +131,10 @@ def submit():
 
     humidity_value = data['humidity_value']
     device_id = data['device_id']
-    ts = data['timestamp']
+    #ts = data['timestamp']
 
     curr = conn.cursor()
-    curr.execute("INSERT INTO measurement (value, device_id, ts) VALUES (%s, %s, '%s')" % (humidity_value, device_id, ts))
+    curr.execute("INSERT INTO measurement (value, device_id, ts) VALUES (%s, %s)" % (humidity_value, device_id))
     conn.commit()
 
 
