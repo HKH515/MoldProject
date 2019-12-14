@@ -117,10 +117,13 @@ def json_api_warnings():
 
 @app.route("/api/index")
 def api_index():
+    w_count = warnings_count()
+    w_only_humidity_count = warnings_count_only_humidity()
     index_info={
             "humidityProblem": False,
-            "numberOfDevices": 2,
-            "numberOfWarnings": 0
+            "numberOfDevices": device_count(),
+            "numberOfWarnings": w_count,
+            "humidityProblem": w_count_only_humidity != 0
         }
     return index_info
 
@@ -136,11 +139,48 @@ def submit():
     curr = conn.cursor()
     curr.execute("INSERT INTO measurement (value, device_id) VALUES (%s, %s)" % (humidity_value, device_id))
     conn.commit()
+    return "OK"
 
+@app.route("/api/device_count")
+def device_count():
+    curr = conn.cursor()
+    curr.execute("SELECT COUNT(*) FROM deviceoverview;")
+    result = curr.fetchone()
+
+    return result[0]
+
+@app.route("/api/warnings_count")
+def warnings_count():
+    curr = conn.cursor()
+    curr.execute("SELECT COUNT(*) FROM warningsoverview;")
+    result = curr.fetchone()
+
+    return result[0]
+
+@app.route("/api/warnings_count_only_humidity")
+def warnings_count_only_humidity():
+    curr = conn.cursor()
+    curr.execute("SELECT COUNT(*) FROM warningsoverviewonlyhumidity;")
+    result = curr.fetchone()
+
+    return result[0]
+
+@app.route("/api/warnings_get_rooms")
+def warnings_get_rooms():
+    curr = conn.cursor()
+    curr.execute("SELECT room_name FROM warningsoverview;")
+    results = curr.fetchall();
+
+    room_list = []
+
+    for row in results:
+        room_list.append(row[0])
+
+    return room_list
 
 def get_chartdata(device_id):
     curr = conn.cursor()
-    curr.execute("SELECT measurement.ts, measurement.value FROM measurement WHERE device_id = %s;" % device_id)
+    curr.execute("SELECT measurement.ts, measurement.value FROM measurement WHERE device_id = %s ORDER BY measurement.ts DESC limit 30;" % device_id)
     return curr.fetchall()
 
 
@@ -173,7 +213,8 @@ def api_chartdata():
 @app.route("/")
 def index():
     info = api_index()
-    return render_template("index.html", index_info=info) 
+    warnings_rooms = warnings_get_rooms()
+    return render_template("index.html", index_info=info, warnings_rooms=warnings_rooms) 
 
 @app.route("/devices")
 def devices():
