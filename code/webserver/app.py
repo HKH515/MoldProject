@@ -151,7 +151,7 @@ def device_count():
 @app.route("/api/warnings_count")
 def warnings_count():
     curr = conn.cursor()
-    curr.execute("COUNT(*) FROM warningsoverview;")
+    curr.execute("SELECT COUNT(*) FROM warningsoverview;")
     result = curr.fetchone()
 
     return result
