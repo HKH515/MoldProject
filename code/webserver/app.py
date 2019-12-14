@@ -176,7 +176,7 @@ def warnings_get_rooms():
     for row in results:
         room_list.append(row[0])
 
-    return room_list
+    return jsonify(room_list)
 
 def get_chartdata(device_id):
     curr = conn.cursor()
