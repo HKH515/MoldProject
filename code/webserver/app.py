@@ -121,7 +121,7 @@ def api_index():
     index_info={
             "humidityProblem": False,
             "numberOfDevices": device_count(),
-            "numberOfWarnings": w_count(),
+            "numberOfWarnings": w_count,
             "humidityProblem": w_count != 0
         }
     return index_info
@@ -146,7 +146,7 @@ def device_count():
     curr.execute("SELECT COUNT(*) FROM deviceoverview;")
     result = curr.fetchone()
 
-    return result
+    return result[0]
 
 @app.route("/api/warnings_count")
 def warnings_count():
@@ -154,7 +154,7 @@ def warnings_count():
     curr.execute("SELECT COUNT(*) FROM warningsoverview;")
     result = curr.fetchone()
 
-    return result
+    return result[0]
 
 @app.route("/api/warnings_get_rooms")
 def warnings_get_rooms():
