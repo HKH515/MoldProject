@@ -15,7 +15,7 @@ CREATE TABLE measurement(
     id bigserial PRIMARY KEY,
     value double precision NOT NULL,
     device_id integer REFERENCES device(id),
-    ts TIMESTAMP
+    ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -40,4 +40,10 @@ CREATE VIEW warningsOverview AS (
     SELECT * FROM deviceOverview
     WHERE value >= 70
     OR connected = False
+);
+
+-- SAME AS ABOVE, BUT THIS IS ONLY FOR HUMIDITY, USED FOR THE WARNING ON THE MAIN PAGE
+CREATE VIEW warningsOverviewOnlyHumidity AS (
+    SELECT * FROM deviceOverview
+    WHERE value >= 70
 );
