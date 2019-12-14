@@ -89,6 +89,11 @@ Walldo
                 // notice the gap in the data and the spanGaps: true
                 data: [],
                 spanGaps: true,
+            },
+            {
+                label: "Humidity threshold",
+                borderColor: "#ff6961",
+                backgroundColor: "#ff6961"
             }]
         };
 
@@ -97,6 +102,13 @@ Walldo
             data: data,
             options: {
                 scales: {
+                    yAxes: [{
+                    ticks: {
+                        beginAtZero:true,
+                        min: 0,
+                        max: 100    
+                    }
+                            }],
                     xAxes: [{
                         type: 'time',
                             distribution: 'series',
@@ -126,12 +138,7 @@ Walldo
                         scaleID: 'y-axis-0',
                         value: 70,
                         borderColor: '#ff6961',
-                        borderWidth: 3,
-                        label: {
-                        backgroundColor: '#ff6961',
-                        enabled: true,
-                        content: 'Humidity threshold'
-                        }
+                        borderWidth: 3
                     }]
                 }
             }
