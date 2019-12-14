@@ -38,8 +38,6 @@ Walldo
 
         getData();
 
-        var firstLoad = true;
-
         var ctx = document.getElementById('theChart').getContext('2d');
         var bigMessage = $('#bigMessage');
         var numOfDevices = $('#numOfDevices');
@@ -153,27 +151,18 @@ Walldo
                 type: 'GET',
                 success : function(data){
 
-                    if(firstLoad)
-                    {
-                        myLineChart.data.datasets[0].data = [];
-                        myLineChart.data.datasets[1].data = [];
+                    myLineChart.data.datasets[0].data = [];
+                    myLineChart.data.datasets[1].data = [];
 
-                        //device1 array
-                        data[0].forEach(element => {
-                            myLineChart.data.datasets[0].data.push({x:element.x,y:element.y});
-                        });
+                    //device1 array
+                    data[0].forEach(element => {
+                        myLineChart.data.datasets[0].data.push({x:element.x,y:element.y});
+                    });
 
-                        //device2 array
-                        data[1].forEach(element => {
-                            myLineChart.data.datasets[1].data.push({x:element.x,y:element.y});
-                        });
-
-                        firstLoad = false;
-                    }
-                    else{
-                        myLineChart.data.datasets[0].data.push(data[0][0]);
-                        myLineChart.data.datasets[1].data.push(data[1][0]);
-                    }
+                    //device2 array
+                    data[1].forEach(element => {
+                        myLineChart.data.datasets[1].data.push({x:element.x,y:element.y});
+                    });
 
                     // re-render the chart
                     myLineChart.update();
