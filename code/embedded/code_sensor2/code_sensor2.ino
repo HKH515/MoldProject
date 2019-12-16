@@ -219,7 +219,7 @@ void loop() {
   ftoa(h, charH, 3);
 // client.publish("humidity_S1", dtostrf(h, 4, 3, charH)); 
 // client.publish("temperature_S1", dtostrf(t, 4, 3, charT));
- client.publish("1", charH); 
+ client.publish("2", charH); 
  //client.publish("temperature_S1", charT);
  
  Serial.println("Going into deep sleep for 20 seconds");
