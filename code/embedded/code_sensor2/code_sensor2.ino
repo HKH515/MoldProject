@@ -8,12 +8,10 @@
 
 #include <LiquidCrystal.h>
 
-// Example testing sketch for various DHT humidity/temperature sensors
-// Written by ladyada, public domain
-
-// REQUIRES the following Arduino libraries:
+// Below written code is based on the following repositories
 // - DHT Sensor Library: https://github.com/adafruit/DHT-sensor-library
 // - Adafruit Unified Sensor Lib: https://github.com/adafruit/Adafruit_Sensor
+// - ESP_MQTT_Secure - https://github.com/debsahu/ESP_MQTT_Secure
 
 #include <DHT.h>;
 #include <ESP8266WiFi.h>
@@ -22,11 +20,9 @@
 #include <ESP8266mDNS.h>
 #include <EEPROM.h>
 #include <PubSubClient.h>
-//#include <Adafruit_SleepyDog.h>
 #include <Wire.h>
 #include <Adafruit_INA219.h>
 //#define CHECK_FINGERPRINT
-//#include "secrets.h"
 
 #define DHTPIN 2
 #define DHTTYPE DHT22 
@@ -40,7 +36,7 @@ DHT dht(DHTPIN, DHTTYPE);
 #endif
 
 
-//#ifndef SECRET
+
 
   #define HOSTNAME "192.168.1.122"
   const char* ssid = STASSID;  
@@ -112,8 +108,7 @@ cQIDAQAB
 //  #endif
 
 
-const byte ledPin = 0; // Pin with LED on Adafruit Huzzah
-//const char* mqtt_server = "192.168.1.122"; 
+//const byte ledPin = 0; // Pin with LED on Adafruit Huzzah
 
 BearSSL::WiFiClientSecure espClient;
 PubSubClient client(espClient);
@@ -123,7 +118,7 @@ void setup() {
   Serial.begin(9600);
   Serial.println(F("DHTxx test!"));
   
-//  NTP.begin();
+
   dht.begin();
   WiFi.hostname(HOSTNAME);
   WiFi.mode(WIFI_STA);
@@ -150,16 +145,16 @@ void setup() {
   #ifdef CHECK_CA_ROOT
       BearSSL::X509List cert(digicert);
       espClient.setTrustAnchors(&cert);
-      Serial.println("ROOT");
+   //   Serial.println("ROOT");
   #endif
   #ifdef CHECK_PUB_KEY
       BearSSL::PublicKey key(pubkey);
       espClient.setKnownKey(&key);
-      Serial.println("PUBKEY");
+    //  Serial.println("PUBKEY");
   #endif
   #ifdef CHECK_FINGERPRINT
       espClient.setFingerprint(fp);
-      Serial.println("FINGER");
+    //  Serial.println("FINGER");
   #endif
   #if (!defined(CHECK_PUB_KEY) and !defined(CHECK_CA_ROOT) and !defined(CHECK_FINGERPRINT))
       espClient.setInsecure();
@@ -214,33 +209,18 @@ void loop() {
  }
  client.loop();
  char charH[10];
- //char charT[10];
 
   ftoa(h, charH, 3);
-// client.publish("humidity_S1", dtostrf(h, 4, 3, charH)); 
-// client.publish("temperature_S1", dtostrf(t, 4, 3, charT));
  client.publish("2", charH); 
- //client.publish("temperature_S1", charT);
+
  
- Serial.println("Going into deep sleep for 20 seconds");
- ESP.deepSleep(10e6); // 20e6 is 20 microseconds
+ Serial.println("Going into deep sleep for 30 seconds");
+ ESP.deepSleep(30e6); 
 }
  
 void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println("Callback");
-// Serial.print("Message arrived [");
-// Serial.print(topic);
-// Serial.print("] ");
-// for (int i=0;i<length;i++) {
-//  char receivedChar = (char)payload[i];
-//  Serial.print(receivedChar);
-//  if (receivedChar == '0')
-//  // ESP8266 Huzzah outputs are "reversed"
-//  digitalWrite(ledPin, HIGH);
-//  if (receivedChar == '1')
-//   digitalWrite(ledPin, LOW);
-//  }
-//  Serial.println();
+  
 }
 
  
